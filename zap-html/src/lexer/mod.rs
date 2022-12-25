@@ -33,7 +33,7 @@ pub fn lex(src: String) -> Vec<Token> {
 
   skip_whitespace(src.clone(), &mut idx);
 
-  while count < 7 {
+  while count < 8 {
     let tag = tag::lex_tag(src.clone(), &mut idx);
 
     if tag.len() == 0 {

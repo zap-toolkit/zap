@@ -72,11 +72,47 @@ pub fn lex_tag(segment: String, idx: &mut i32) -> Vec<Token> {
       super::skip_whitespace(segment.clone(), &mut *idx);
 
       // Create tokens
-      let tkn_attrib_name = Token { name: "$T_TAG_ATTRIB_NAME".to_string(), value: attrib_name };
+      let tkn_attrib_name = Token { name: "$T_TAG_ATTRIB_NAME".to_string(), value: attrib_name.clone() };
       let tkn_attrib_value = Token { name: "$T_TAG_ATTRIB_VALUE".to_string(), value: attrib_value };
 
       tokens.push(tkn_attrib_name);
       tokens.push(tkn_attrib_value);
+
+      *idx += 1;
+      super::skip_whitespace(segment.clone(), &mut *idx);
+    }
+  } else {
+    // If there is token content
+    super::skip_whitespace(segment.clone(), &mut *idx);
+    *idx += 1;
+    super::skip_whitespace(segment.clone(), &mut *idx);
+
+    // Get the content
+    let mut content = "".to_string();
+
+    while *idx < segment.len() as i32 && segment.chars().nth(*idx as usize).unwrap() != '<' {
+      content.push(segment.chars().nth(*idx as usize).unwrap());
+      *idx += 1;
+    }
+
+    super::skip_whitespace(segment.clone(), &mut *idx);
+    tokens.push(Token { name: "$T_TAG_CONTENT".to_string(), value: content });
+
+    // If there is a closing tag
+    if segment.chars().nth(*idx as usize).unwrap() == '<' {
+      *idx += 1;
+      super::skip_whitespace(segment.clone(), &mut *idx);
+
+      if segment.chars().nth(*idx as usize).unwrap() != '/' {
+        println!("Error: Missing '/' character after tag content.");
+      }
+
+      *idx += 1;
+      let closetag = super::tokenize_letters(segment.clone(), &mut *idx);
+
+      // Append the tokens
+      let closing = Token { name: "$T_CLOSING_TAG".to_string(), value: closetag };
+      tokens.push(closing);
 
       *idx += 1;
       super::skip_whitespace(segment.clone(), &mut *idx);
