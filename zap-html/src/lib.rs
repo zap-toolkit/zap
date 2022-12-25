@@ -1,14 +1,9 @@
-pub fn add(left: usize, right: usize) -> usize {
-    left + right
-}
+mod lexer;
 
-#[cfg(test)]
-mod tests {
-    use super::*;
+// Generates a parse tree from the provided HTML source.
+pub fn gen(filename: &str) {
+  let src = std::fs::read_to_string(filename)
+    .expect(format!("Error: HTML source file \"{}\" does not exist.", filename).as_str());
 
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
-    }
+  println!("{:?}", lexer::tag::lex_tag(src, 0));
 }

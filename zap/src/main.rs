@@ -1,3 +1,3 @@
 fn main() {
-    println!("Hello, world!");
+  zap_html::gen("input/01.html");
 }
