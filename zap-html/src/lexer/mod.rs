@@ -17,7 +17,7 @@ pub(self) fn skip_whitespace(segment: String, idx: &mut i32) {
 pub(self) fn tokenize_letters(segment: String, idx: &mut i32) -> String {
   let mut letters = "".to_string();
 
-  while *idx < segment.len() as i32 && segment.chars().nth(*idx as usize).unwrap().is_alphabetic() {
+  while *idx < segment.len() as i32 && segment.chars().nth(*idx as usize).unwrap().is_alphanumeric() {
     letters.push(segment.chars().nth(*idx as usize).unwrap());
     *idx += 1;
   }
