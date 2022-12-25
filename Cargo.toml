@@ -1,0 +1,7 @@
+[workspace]
+members = [
+  "zap",
+  "zap-html",
+  "zap-css",
+  "zap-js"
+]
